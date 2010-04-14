@@ -1,6 +1,6 @@
 from restkit import Resource, oauth2, OAuthFilter
 from restkit.errors import ResourceNotFound, Unauthorized, RequestError, RequestFailed
-from libclient.utils import json_unpack
+from bvlibclient.utils import json_unpack
 import httplib2
 
 class BvResource(Resource):

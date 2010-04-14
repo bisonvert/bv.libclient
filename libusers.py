@@ -1,5 +1,5 @@
-from libclient.baselib import BaseLib
-from libclient.utils import json_unpack, ApiObject, dict_to_object
+from bvlibclient.baselib import BaseLib
+from bvlibclient.utils import json_unpack, ApiObject, dict_to_object
 
 class User(ApiObject):
     pass

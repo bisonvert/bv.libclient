@@ -4,7 +4,7 @@
 from django.conf import settings
 import inspect
 
-from libclient import LibUsers
+from bvlibclient import LibUsers
 
 def get_defaults_args(func):
     """Return the default arguments dict of a callable

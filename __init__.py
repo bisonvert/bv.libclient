@@ -5,7 +5,7 @@ You can find more informations about the API at http://api.bisonvert.net/
 """
 
 # Imports all things that have to be accessed from outside.
-from libclient.libtrips import LibTrips, Trip, Offer, Demand
-from libclient.libusers import LibUsers, User
-from libclient.utils import unicode_to_dict 
-from libclient.exceptions import *
+from bvlibclient.libtrips import LibTrips, Trip, Offer, Demand
+from bvlibclient.libusers import LibUsers, User
+from bvlibclient.utils import unicode_to_dict 
+from bvlibclient.exceptions import *

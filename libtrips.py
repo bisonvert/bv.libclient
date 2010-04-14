@@ -1,13 +1,13 @@
 # Internal lib imports
-from libclient.baselib import BaseLib
-from libclient.utils import ApiObject, json_unpack, date_to_api, api_to_date, \
+from bvlibclient.baselib import BaseLib
+from bvlibclient.utils import ApiObject, json_unpack, date_to_api, api_to_date, \
          api_to_time, dict_to_object, dict_to_object_list, unicode_to_dict, \
          is_iterable, dict_to_object_list_func, dict_to_object_func
 
-from libclient.exceptions import LibException, ResourceAccessForbidden, ResourceDoesNotExist, \
+from bvlibclient.exceptions import LibException, ResourceAccessForbidden, ResourceDoesNotExist, \
     EditTripFormError
 
-from libclient.libusers import User
+from bvlibclient.libusers import User
 from restkit.errors import RequestFailed
 
 # Python imports

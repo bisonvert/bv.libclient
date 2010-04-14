@@ -1,12 +1,12 @@
-"""Tests for the Bison vert libclient
+"""Tests for the Bison vert bvlibclient
 
 """
 import unittest
 import json
 from mock import Mock
 
-from libclient.baselib import BvResource, BaseLib
-from libclient import LibTrips, Trip, EditTripFormError
+from bvlibclient.baselib import BvResource, BaseLib
+from bvlibclient import LibTrips, Trip, EditTripFormError
 
 class HttpResponse:
     """HttpResponse mock
