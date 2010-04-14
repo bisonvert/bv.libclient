@@ -9,7 +9,7 @@ if not hasattr(sys, 'version_info') or sys.version_info < (2, 5, 0, 'final'):
     raise SystemExit("Bisonvert lib client requires Python 2.5 or later.")
 
 from setuptools import setup, find_packages
-from bvclient import __version__
+from bvlibclient import __version__
  
 setup(
     name = 'bisonvert-libclient',
@@ -27,7 +27,7 @@ setup(
     url = 'http://bitbucket.org/bisonvert/bvlibclient',
     install_requires = [
             "restkit >= 1.3.0",
-    ]
+    ],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
