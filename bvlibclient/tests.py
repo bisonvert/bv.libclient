@@ -227,7 +227,5 @@ class TripsTests(BaseTestCase):
         self.assertEqual(cartypes[1].title2, 'value2')
 
 
-
-
 if __name__ == '__main__':
     unittest.main()
