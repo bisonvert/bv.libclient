@@ -6,7 +6,7 @@ import json
 from mock import Mock
 
 from bvlibclient.baselib import BvResource, BaseLib
-from bvlibclient import LibTrips, Trip, EditTripFormError
+from bvlibclient import LibTrips, Trip, EditTripFormError, LibTalks
 
 class HttpResponse:
     """HttpResponse mock
@@ -32,8 +32,8 @@ class BaseTestCase(unittest.TestCase):
         'emptycollection': [],
         'emptysingle': {},
         'error': {'error': 'this is an error'},
-        'trip_search_offers': {'trip_demands': None, 'trip_offers': [{'title1': 'value'}, {'title2': 'value2'}], 'trip': None},
-        'trip_search_demands': {'trip_demands': [{'title1': 'value'}, {'title2': 'value2'}], 'trip_offers': None, 'trip': None},
+        'ok': 'OK',
+        'created': 'CREATED',
     }
 
     def setUp(self):
@@ -80,6 +80,10 @@ class TripsTests(BaseTestCase):
 
     """
     lib_class = LibTrips
+    _return_types = dict(BaseTestCase._return_types.items() + {
+        'trip_search_offers': {'trip_demands': None, 'trip_offers': [{'title1': 'value'}, {'title2': 'value2'}], 'trip': None},
+        'trip_search_demands': {'trip_demands': [{'title1': 'value'}, {'title2': 'value2'}], 'trip_offers': None, 'trip': None},
+    }.items())
 
     def test_transform_dows(self):
         params = (
@@ -226,6 +230,49 @@ class TripsTests(BaseTestCase):
         self.assertEqual(cartypes[0].title1, 'value')
         self.assertEqual(cartypes[1].title2, 'value2')
 
+class TalksTests(BaseTestCase):
+    """Tests of the talks lib.
+
+    """
+    lib_class = LibTalks
+    
+    def test_list_talks(self):
+        res = self._mock_resource_method('get', 'collection')
+        talks = self.lib.list_talks()
+        res.get.assert_called_with()
+
+        self.assertEqual(talks[0].title1, 'value')
+        self.assertEqual(talks[1].title2, 'value2')
+
+    def test_validate_talk(self):
+        res = self._mock_resource_method('put', 'ok')
+        self.lib.validate_talk(7)
+        res.put.assert_called_with(path='7/', validate='true')
+
+    def test_delete_talk(self):
+        res = self._mock_resource_method('put', 'ok')
+        self.lib.delete_talk(7, 'my message')
+        res.put.assert_called_with(path='7/', message='my message',
+            cancel='true')
+
+    def test_create_talk(self):
+        creation_message = 'creation message'
+        res = self._mock_resource_method('post', 'ok')
+        self.lib.create_talk(7, creation_message)
+        res.post.assert_called_with(trip_id=7, message=creation_message)
+
+    def test_list_talk_messages(self):
+        res = self._mock_resource_method('get', 'collection')
+        talk_id = 7
+        self.lib.list_talk_messages(talk_id)
+        res.get.assert_called_with(path='%s/messages/' % talk_id)
+
+    def test_add_message_to_talk(self):
+        res = self._mock_resource_method('post', 'ok')
+        talk_id = 7
+        talk_message = 'my message'
+        self.lib.add_message_to_talk(talk_id, talk_message)
+        res.post.assert_called_with(path='%s/messages/' % talk_id, message=talk_message)
 
 if __name__ == '__main__':
     unittest.main()
