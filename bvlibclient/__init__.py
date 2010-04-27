@@ -1,11 +1,11 @@
-version_info = (0, 1, 0)
-__version__ =  ".".join(map(str, version_info))
-
 """Official python lib to access the Bison Vert Carpooling webservice.
 
 You can find more informations about the API at http://api.bisonvert.net/
 
 """
+version_info = (0, 1, 0)
+__version__ =  ".".join(map(str, version_info))
+
 
 # Imports all things that have to be accessed from outside.
 from bvlibclient.libtrips import LibTrips, Trip, Offer, Demand

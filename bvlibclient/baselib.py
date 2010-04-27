@@ -15,8 +15,8 @@ class BvResource(Resource):
 
         """
         try:
-            return super(BvResource, self).request(method, path=None, 
-                payload=None, headers=None, **params)
+            return super(BvResource, self).request(method, path=path, 
+                payload=payload, headers=headers, **params)
         except ResourceNotFound as e:
             raise ResourceDoesNotExist(e.response)
         except Unauthorized as e:

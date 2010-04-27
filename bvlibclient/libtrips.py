@@ -3,11 +3,10 @@ from bvlibclient.baselib import BaseLib
 from bvlibclient.utils import ApiObject, json_unpack, date_to_api, api_to_date, \
          api_to_time, dict_to_object, dict_to_object_list, unicode_to_dict, \
          is_iterable, dict_to_object_list_func, dict_to_object_func
-
 from bvlibclient.exceptions import ResourceAccessForbidden, ResourceDoesNotExist, \
     EditTripFormError
-
 from bvlibclient.libusers import User
+from bvlibclient.constants import DEFAULT_PAGINATION
 from restkit.errors import RequestFailed
 
 # Python imports
@@ -16,7 +15,6 @@ import json
 TRIP_OFFER = 0
 TRIP_DEMAND = 1
 TRIP_BOTH = 2
-DEFAULT_PAGINATION = 20 # Display 20 items per page by default
 
 # Model Objects
 class Offer(ApiObject):

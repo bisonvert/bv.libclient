@@ -249,6 +249,17 @@ class TalksTests(BaseTestCase):
         assert talks[0].title == 'value'
         assert talks[1].title2 == 'value2'
 
+    def test_get_talk(self):
+        res = self._mock_resource_method('get', 'single')
+        id = 1
+        talk = self.lib.get_talk_by_id(id)
+        res.get.assert_called_with(path='%i/' % int(id)) 
+
+    def test_count_talks(self):
+        res = self._mock_resource_method('get', value='1',http_response=True)
+        assert self.lib.count_talks() == 1
+        res.get.assert_called_with(path='count/')
+
     def test_validate_talk(self):
         res = self._mock_resource_method('put', 'ok')
         self.lib.validate_talk(7)
@@ -271,6 +282,11 @@ class TalksTests(BaseTestCase):
         talk_id = 7
         self.lib.list_talk_messages(talk_id)
         res.get.assert_called_with(path='%s/messages/' % talk_id)
+
+    def test_count_talks(self):
+        res = self._mock_resource_method('get', value='1',http_response=True)
+        assert self.lib.count_messages(2) == 1
+        res.get.assert_called_with(path='2/messages/count/')
 
     def test_add_message_to_talk(self):
         res = self._mock_resource_method('post', 'ok')
