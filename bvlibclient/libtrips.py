@@ -4,7 +4,7 @@ from bvlibclient.utils import ApiObject, json_unpack, date_to_api, api_to_date, 
          api_to_time, dict_to_object, dict_to_object_list, unicode_to_dict, \
          is_iterable, dict_to_object_list_func, dict_to_object_func
 
-from bvlibclient.exceptions import LibException, ResourceAccessForbidden, ResourceDoesNotExist, \
+from bvlibclient.exceptions import ResourceAccessForbidden, ResourceDoesNotExist, \
     EditTripFormError
 
 from bvlibclient.libusers import User
@@ -137,15 +137,7 @@ class LibTrips(BaseLib):
         """Delete a trip, or raise appropriate exceptions if needed.
         
         """
-        try:
-            resp = self.get_resource('trip').delete(path='%s/' % trip_id)
-        except RequestFailed as e:
-            if e.status_int == 410:
-                raise ResourceDoesNotExist()
-            elif e.status_int == 401:
-                raise ResourceAccessForbidden()
-            else:
-                raise LibException()
+        resp = self.get_resource('trip').delete(path='%s/' % trip_id)
 
     def search_trip(self, **kwargs):
         temp_results = self._search_trip(**kwargs)

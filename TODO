@@ -1,2 +1,2 @@
-LibRatings
 Use ordering via api when needed
+Provide a django middleware to handle lib exceptions and display errors

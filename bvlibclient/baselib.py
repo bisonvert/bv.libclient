@@ -1,12 +1,28 @@
 from restkit import Resource, oauth2, OAuthFilter
 from restkit.errors import ResourceNotFound, Unauthorized, RequestError, RequestFailed
+from bvlibclient.exceptions import ResourceAccessForbidden, \
+        ResourceDoesNotExist 
 from bvlibclient.utils import json_unpack
 import httplib2
 
 class BvResource(Resource):
     """A Bison Vert Resource
+
     """
-    pass
+    def request(self, method, path=None, payload=None, headers=None, **params):
+        """Redefine the request method to raise our proper exception when
+        needed, and not expose the underlying lib.
+
+        """
+        try:
+            return super(BvResource, self).request(method, path=None, 
+                payload=None, headers=None, **params)
+        except ResourceNotFound as e:
+            raise ResourceDoesNotExist(e.response)
+        except Unauthorized as e:
+            raise ResourceAccessForbidden(e.response)
+        except RequestError as e:
+            raise ApiException(e.response)
 
 class BaseLib:
     _api_base_url = '/api'
