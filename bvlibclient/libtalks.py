@@ -5,6 +5,7 @@ from bvlibclient.utils import json_unpack, ApiObject, dict_to_object, \
 from bvlibclient.libtrips import Trip
 from bvlibclient.libusers import User
 from bvlibclient.constants import DEFAULT_PAGINATION
+from bvlibclient.exceptions import *
 
 class Talk(ApiObject):
     _class_keys = {
@@ -58,7 +59,7 @@ class LibTalks(BaseLib):
         
         """
         try:
-            self.create_talk_talk_by_id(id)
+            self.create_talk(trip_id)
             return True
         except ResourceDoesNotExist:
             return False
