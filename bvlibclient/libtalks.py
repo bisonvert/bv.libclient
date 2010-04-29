@@ -47,21 +47,26 @@ class LibTalks(BaseLib):
         """
         self.get_resource('talks').put(path='%s/' % id, validate='true')
 
+    @dict_to_object_list(Talk)
+    @json_unpack()
+    def list_talks_by_trip(self, trip_id):
+        """Return a talk by its id."""
+        return self.get_resource('talks').get(trip_id=trip_id)
+
     @dict_to_object(Talk)
     @json_unpack()
-    def get_talk_by_id(self, id):
+    def get_talk(self, id):
         """Return a talk by its id."""
         return self.get_resource('talks').get(path='%i/' % int(id))
     
-    def talk_exists(self, trip_id):
+    def talk_exists_for_trip(self, trip_id):
         """Check if a test exists or not, and return True or False, depending
         the case
         
         """
-        try:
-            self.create_talk(trip_id)
+        if len(self.list_talks_by_trip(trip_id)) > 0:
             return True
-        except ResourceDoesNotExist:
+        else:
             return False
 
     def delete_talk(self, id, message):

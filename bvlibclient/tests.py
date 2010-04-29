@@ -249,10 +249,18 @@ class TalksTests(BaseTestCase):
         assert talks[0].title == 'value'
         assert talks[1].title2 == 'value2'
 
+    def test_list_talks_by_trip(self):
+        res = self._mock_resource_method('get', 'collection')
+        talks = self.lib.list_talks_by_trip(1)
+        res.get.assert_called_with(trip_id=1)
+
+        assert talks[0].title == 'value'
+        assert talks[1].title2 == 'value2'
+
     def test_get_talk(self):
         res = self._mock_resource_method('get', 'single')
         id = 1
-        talk = self.lib.get_talk_by_id(id)
+        talk = self.lib.get_talk(id)
         res.get.assert_called_with(path='%i/' % int(id)) 
 
     def test_count_talks(self):
@@ -294,6 +302,18 @@ class TalksTests(BaseTestCase):
         talk_message = 'my message'
         self.lib.add_message_to_talk(talk_id, talk_message)
         res.post.assert_called_with(path='%s/messages/' % talk_id, message=talk_message)
+
+    def test_talk_exist_for_trip(self):
+        talk_id = 7
+        self.lib.list_talks_by_trip = Mock()
+        self.lib.list_talks_by_trip.return_value = []
+        assert self.lib.talk_exists_for_trip(talk_id) == False
+        self.lib.list_talks_by_trip.assert_called_with(talk_id)
+
+        self.lib.list_talks_by_trip.return_value = ["object1", "object2"]
+        assert self.lib.talk_exists_for_trip(talk_id) == True
+        self.lib.list_talks_by_trip.assert_called_with(talk_id)
+
 
 class TestLibRatings(BaseTestCase):
     lib_class = LibRatings
