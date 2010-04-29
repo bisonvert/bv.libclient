@@ -73,14 +73,6 @@ def inject_lib(lib):
         return wrapped
     return wrapper
 
-
-class LazyUser(object):
-    def __get__(self, request):
-        if not hasattr(request, '_cached_user'):
-            lib = getlib(LibUsers, request)
-            request._cached_user = lib.get_active_user()
-        return request._cached_user
-
 class AuthenticationMiddleware(object):
     def process_request(self, request):
         """If some information is available in session about oauth token, 
@@ -90,6 +82,22 @@ class AuthenticationMiddleware(object):
         """
         if not oauth_need_authentication(request, oauth_identifier):
             lib = get_lib(LibUsers, request)
-            request.__class__.user = LazyUser()
+            request.__class__.bvuser = lib.get_active_user()
         return None
 
+def bvauth(request):
+    """
+    Returns context variables required by apps that want to use the
+    authentication via the Bison Vert API.
+    
+    If there is no 'user' attribute in the request, uses None
+    """
+    def get_user():
+        if hasattr(request, 'bvuser'):
+            return request.bvuser
+        else:
+            return False
+    
+    return {
+        'bvuser': get_user(),
+    }
