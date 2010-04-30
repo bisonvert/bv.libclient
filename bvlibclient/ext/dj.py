@@ -82,7 +82,11 @@ class AuthenticationMiddleware(object):
         """
         if not oauth_need_authentication(request, oauth_identifier):
             lib = get_lib(LibUsers, request)
-            request.__class__.bvuser = lib.get_active_user()
+            bvuser = lib.get_active_user()
+        else:
+            bvuser = None
+
+        request.__class__.bvuser = bvuser
         return None
 
 def bvauth(request):
@@ -96,7 +100,7 @@ def bvauth(request):
         if hasattr(request, 'bvuser'):
             return request.bvuser
         else:
-            return False
+            return None
     
     return {
         'bvuser': get_user(),

@@ -31,7 +31,8 @@ class LibTalks(BaseLib):
         """Return the list of talks for the authenticated user.
 
         """
-        return self.get_resource('talks').get()
+        return  self.get_resource('talks').get(
+                **self._get_pagination_params(page,count))
 
     def count_talks(self):
         """Count the number of talks
