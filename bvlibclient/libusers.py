@@ -2,7 +2,8 @@ from bvlibclient.baselib import BaseLib
 from bvlibclient.utils import json_unpack, ApiObject, dict_to_object
 
 class User(ApiObject):
-    pass
+    def is_authenticated(self):
+        return True
 
 class LibUsers(BaseLib):
     _urls = {

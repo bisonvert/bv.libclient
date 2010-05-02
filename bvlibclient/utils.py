@@ -89,18 +89,27 @@ class ApiObject:
 
 #convertors
 def api_to_date(value):
-    """Convert a date from YYY-MM-DD format to a real python date object.
+    """Convert a date from YYYY-MM-DD format to a real python date object.
     
     """
     return datetime.date(*time.strptime(value, '%Y-%m-%d')[:3])
     
 def api_to_time(value):
-    """Convert a date from  format to a real python datetime object.
+    """Convert a date from h:m:s format to a real python datetime object.
     
     """
     if value is None:
         return None
     return datetime.time(*time.strptime(value, '%H:%M:%S')[3:6])
+
+
+def api_to_datetime(value):
+    """Convert a date from yyyy:mm:dd h:m:s format to a real python datetime object.
+    
+    """
+    if value is None:
+        return None
+    return datetime.datetime(*time.strptime(value, '%Y-%m-%d %H:%M:%S')[:6])
     
 def date_to_api(value):
     """Convert a date in format DD/MM/YYYY to YYYY-MM-DD

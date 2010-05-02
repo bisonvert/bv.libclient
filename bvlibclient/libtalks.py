@@ -1,6 +1,6 @@
 from bvlibclient.baselib import BaseLib
 from bvlibclient.utils import json_unpack, ApiObject, dict_to_object, \
-        dict_to_object_list
+        dict_to_object_list, api_to_datetime
 
 from bvlibclient.libtrips import Trip
 from bvlibclient.libusers import User
@@ -10,15 +10,30 @@ from bvlibclient.exceptions import *
 class Talk(ApiObject):
     _class_keys = {
         'trip': Trip, 
-        'user': User,
+        'from_user': User,
     }
-    pass
 
 class Message(ApiObject):
     _class_keys = {
         'talk' : Talk,
     }
-    pass
+    clean_date = staticmethod(api_to_datetime)
+
+    @property
+    def user(self):
+        """return the message user"""
+        if self.from_user:
+            return self.talk.from_user
+        else:
+            return self.talk.trip.user
+
+    @property
+    def to_user(self):
+        """return the user for wich the messsage has been wrote"""
+        if self.from_user:
+            return self.talk.trip.user
+        else:
+            return self.talk.from_user
 
 class LibTalks(BaseLib):
     _urls = {
@@ -91,7 +106,7 @@ class LibTalks(BaseLib):
         """List all the messages in a talk
 
         """
-        return self.get_resource('messages').get(path='%s/messages/' % talk_id)
+        return self.get_resource('talks').get(path='%s/messages/' % talk_id)
 
 
     def count_messages(self, talk_id):
@@ -105,6 +120,7 @@ class LibTalks(BaseLib):
         """Add a message to an existing talk
 
         """
-        self.get_resource('talks').post(path='%s/messages/' % talk_id, 
-                message=message)
+        self.get_resource('talks').post(path='%s/messages/' % talk_id, payload={
+            'message':message,
+        })
 

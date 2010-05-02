@@ -44,6 +44,19 @@ class Trip(ApiObject):
         elif getattr(self, 'demand', False):
             return TRIP_DEMAND
 
+    @property
+    def trip_type_name(self):
+        if self.trip_type == 0:
+            return 'Offer'
+        elif self.trip_type == 1:
+            return 'Demand'
+        elif self.trip_type == 2:
+            return 'Both'
+
+    def __unicode__(self):
+        return u"%s - %s" % (self.departure_city, self.arrival_city)
+        
+
 class CarType(ApiObject):
     def __str__(self):
         return self.name

@@ -1,7 +1,7 @@
 from restkit import Resource, oauth2, OAuthFilter
 from restkit.errors import ResourceNotFound, Unauthorized, RequestError, RequestFailed
 from bvlibclient.exceptions import ResourceAccessForbidden, \
-        ResourceDoesNotExist 
+        ResourceDoesNotExist, ApiException
 from bvlibclient.utils import json_unpack
 import httplib2
 
@@ -22,7 +22,7 @@ class BvResource(Resource):
         except Unauthorized as e:
             raise ResourceAccessForbidden(e.response)
         except RequestError as e:
-            raise ApiException(e.response)
+            raise ApiException(e)
 
 class BaseLib:
     _api_base_url = '/api'
