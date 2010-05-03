@@ -95,10 +95,11 @@ class LibTalks(BaseLib):
     def create_talk(self, trip_id, message):
         """Initalize the conversation with an existing user.
 
-        If the talk does not exist yet, create it for the purpose.
-        
         """
-        self.get_resource('talks').post(trip_id=trip_id, message=message)
+        return int(self.get_resource('talks').post(**{
+            'trip_id':trip_id, 
+            'message':message
+        }).body)
 
     @dict_to_object_list(Message)
     @json_unpack()
@@ -120,7 +121,7 @@ class LibTalks(BaseLib):
         """Add a message to an existing talk
 
         """
-        self.get_resource('talks').post(path='%s/messages/' % talk_id, payload={
+        self.get_resource('talks').post(path='%s/messages/' % talk_id, **{
             'message':message,
         })
 
