@@ -9,21 +9,22 @@ Steps to follow to set up a django application:
         @inject_lib(LibCarpool)
         def my_view(request, param1, lib)
 
-    * that's it. 
-
 """
 from django.conf import settings
 import inspect
 
-from oauthclient.utils import get_consumer_token, oauth_need_authentication, \
-    is_oauthenticated
+from oauthclient.utils import get_consumer_token, is_oauth_authenticated, \
+    need_oauth_authentication
 
 from bvlibclient import LibUsers
 
 oauth_identifier = getattr(settings, 'BVCLIENT_OAUTH_APPID', 'bisonvert')
 
-def is_bvoauthenticated(*args, **kwargs):
-    return is_oauthenticated(identifier=oauth_identifier, *args, **kwargs)
+def is_bvoauth_authenticated(request):
+    return is_oauth_authenticated(request, oauth_identifier)
+
+def need_bvoauth_authentication(*args, **kwargs):
+    return need_oauth_authentication(identifier=oauth_identifier, *args, **kwargs)
 
 def get_defaults_args(func):
     """Return the default arguments dict of a callable
@@ -45,7 +46,7 @@ def get_lib(lib, request):
         'consumer_key': token.key,
         'consumer_secret': token.secret,
     }
-    if not oauth_need_authentication(request, oauth_identifier):
+    if is_oauth_authenticated(request, oauth_identifier):
         kwargs['token_key'] = request.session[oauth_identifier + '_oauth_token']
         kwargs['token_secret'] = request.session[oauth_identifier + '_oauth_token_secret']
     return lib(**kwargs)
@@ -80,7 +81,7 @@ class AuthenticationMiddleware(object):
         in the request.
 
         """
-        if not oauth_need_authentication(request, oauth_identifier):
+        if is_oauth_authenticated(request, oauth_identifier):
             lib = get_lib(LibUsers, request)
             request.__class__.bvuser = lib.get_active_user()
         return None
