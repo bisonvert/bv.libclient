@@ -119,6 +119,13 @@ def date_to_api(value):
     splits.reverse()
     return "-".join(splits)
 
+def string_to_boolean(value):
+    """convert a string value into a boolean"""
+    if value in ("true", "True", "1", True):
+        return True
+    else:
+        return False
+
 # Python 
 
 def is_iterable(obj):

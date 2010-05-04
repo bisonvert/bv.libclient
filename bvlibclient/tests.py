@@ -244,7 +244,7 @@ class TalksTests(BaseTestCase):
     def test_list_talks(self):
         res = self._mock_resource_method('get', 'collection')
         talks = self.lib.list_talks()
-        res.get.assert_called_with()
+        res.get.assert_called_with(**{'count':20, 'start': 0})
 
         assert talks[0].title == 'value'
         assert talks[1].title2 == 'value2'
@@ -281,9 +281,13 @@ class TalksTests(BaseTestCase):
 
     def test_create_talk(self):
         creation_message = 'creation message'
-        res = self._mock_resource_method('post', 'ok')
-        self.lib.create_talk(7, creation_message)
-        res.post.assert_called_with(trip_id=7, message=creation_message)
+        message_id = 1
+        trip_id = 7
+
+        res = self._mock_resource_method('post', value=message_id,
+            http_response=True)
+        self.lib.create_talk(trip_id, creation_message)
+        res.post.assert_called_with(trip_id=trip_id, message=creation_message)
 
     def test_list_talk_messages(self):
         res = self._mock_resource_method('get', 'collection')
@@ -342,28 +346,32 @@ class TestLibRatings(BaseTestCase):
         assert pendings[0].title == 'value'
         assert pendings[1].title2 == 'value2'
 
-    def test_get_rating_by_id(self):
+    def test_get_rating(self):
         res = self._mock_resource_method('get', 'single')
 
         values_ok = (7, '7')
         values_wrong = ("sept")
 
         for id in values_ok:
-            rating = self.lib.get_rating_by_id(id)
+            rating = self.lib.get_rating(id)
             res.get.assert_called_with(path='7/')
             assert rating.title == 'value'
 
         for id in values_wrong:
-            self.assertRaises(ValueError, self.lib.get_rating_by_id, id)
+            self.assertRaises(ValueError, self.lib.get_rating, id)
 
     def test_rate_user(self):
         res = self._mock_resource_method('post', 'single')
 
         values_ok = (
+            ("0","a simple comment"),
+            (0,"a simple comment"),
+            ("5","a simple comment"),
+            (5,"a simple comment"),
             ("1","a simple comment"),
             (1,"a simple comment"),
-            (-4, "a simple comment"),
             ("-4", "a simple comment"),
+            (-4, "a simple comment"),
         )
 
         values_wrong = (
@@ -375,8 +383,10 @@ class TestLibRatings(BaseTestCase):
         
         for mark, comment in values_ok:
             self.lib.rate_user(1, mark, comment)
-            res.post.assert_called_with(path='1/', 
-                    comment=comment, mark=abs(int(mark)))
+            res.post.assert_called_with(**{
+                'temprating_id':1, 
+                'comment':comment, 
+                'mark':abs(int(mark))})
 
         for mark, comment in values_wrong:
             self.assertRaises(ValueError, self.lib.rate_user, 1, mark, comment)

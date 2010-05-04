@@ -1,5 +1,5 @@
-Things to do before the first release of bisonvert, in the clientlib
-====================================================================
+bvlibbclient
+============
 
 *   Use ordering via api when needed
 *   Provide a django middleware to handle lib exceptions and display errors
@@ -10,3 +10,5 @@ Things to do before the first release of bisonvert, in the clientlib
         - middlewares.py
         - context_processors.py
         - decorators.py
+
+
