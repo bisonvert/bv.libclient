@@ -87,18 +87,20 @@ class ApiObject:
     def get(self, attr, default=False):
         return getattr(self, attr, default)
 
-#convertors
+# convertors
 def api_to_date(value):
     """Convert a date from YYYY-MM-DD format to a real python date object.
     
     """
+    if is_null(value):
+        return None
     return datetime.date(*time.strptime(value, '%Y-%m-%d')[:3])
     
 def api_to_time(value):
     """Convert a date from h:m:s format to a real python datetime object.
     
     """
-    if value is None:
+    if is_null(value):
         return None
     return datetime.time(*time.strptime(value, '%H:%M:%S')[3:6])
 
@@ -107,7 +109,7 @@ def api_to_datetime(value):
     """Convert a date from yyyy:mm:dd h:m:s format to a real python datetime object.
     
     """
-    if value is None:
+    if value in (None, 'null', 'none'):
         return None
     return datetime.datetime(*time.strptime(value, '%Y-%m-%d %H:%M:%S')[:6])
     
@@ -115,6 +117,9 @@ def date_to_api(value):
     """Convert a date in format DD/MM/YYYY to YYYY-MM-DD
     
     """
+    if value in (None, 'null', 'none'):
+        return None
+    
     splits = value.encode().split('/')
     splits.reverse()
     return "-".join(splits)
@@ -135,3 +140,7 @@ def is_iterable(obj):
         return False
     else: 
         return True
+
+def is_null(value):
+    return value in (None, 'null', 'none')
+

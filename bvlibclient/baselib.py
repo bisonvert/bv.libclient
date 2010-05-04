@@ -17,12 +17,16 @@ class BvResource(Resource):
         try:
             return super(BvResource, self).request(method, path=path, 
                 payload=payload, headers=headers, **params)
-        except ResourceNotFound as e:
-            raise ResourceDoesNotExist(e.response)
-        except Unauthorized as e:
-            raise ResourceAccessForbidden(e.response)
-        except RequestError as e:
-            raise ApiException(e)
+        except Exception as e:
+            # for debugging purposes. FIXME
+            from ipdb import set_trace
+            set_trace()
+#        except ResourceNotFound as e:
+#            raise ResourceDoesNotExist(e.response)
+#        except Unauthorized as e:
+#            raise ResourceAccessForbidden(e.response)
+#        except RequestError as e:
+#            raise ApiException(e)
 
 class BaseLib:
     _api_base_url = '/api'
