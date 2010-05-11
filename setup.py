@@ -26,7 +26,7 @@ setup(
     license = 'BSD',
     url = 'http://bitbucket.org/bisonvert/bvlibclient',
     install_requires = [
-            "restkit >= 1.3.0",
+            "restkit = 1.4",
     ],
     classifiers=[
         'Development Status :: 4 - Beta',

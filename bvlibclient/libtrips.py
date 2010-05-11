@@ -18,7 +18,9 @@ TRIP_BOTH = 2
 
 # Model Objects
 class Offer(ApiObject):
-    pass
+    @property
+    def checkpoints(self):
+        return self.steps
 
 class Demand(ApiObject):
     pass
@@ -71,6 +73,8 @@ class LibTrips(BaseLib):
         'city': '/cities/',
         'search': '/trips/search/',
         'cartypes': '/cartypes/',
+        'calculate_buffer': '/gis/calculate_buffer/',
+        'ogcserver': '/gis/ogcserver/',
     }
     
     def _transform_dows(self, kwargs):
@@ -204,5 +208,10 @@ class LibTrips(BaseLib):
 
         """
         return self.get_resource('cartypes').get()
-   
 
+    @json_unpack()
+    def calculate_buffer(self, params):
+        return self.get_resource('calculate_buffer').get(**params)
+   
+    def ogcserver(self, params):
+        return self.get_resource('ogcserver', filters=[]).get(**params).body

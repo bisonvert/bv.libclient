@@ -75,14 +75,16 @@ class BaseLib:
         """
         return '%s%s%s' % (self.server_url, self._api_base_url, path)
     
-    def get_resource(self, key=None, path=None):
+    def get_resource(self, key=None, path=None, filters=None):
         """Return a restkit resource object
         
         """
         if key and key in self._urls:
             path = self._urls[key]
-        try:  
-            return self._resource_class(self.get_resource_name(path), filters=self._filters)
+        try: 
+            if filters == None:
+                filters = self._filters
+            return self._resource_class(self.get_resource_name(path), filters=filters)
         except RequestFailed as e:
             raise Exception(e.response.body)
     
