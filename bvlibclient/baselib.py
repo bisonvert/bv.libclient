@@ -29,7 +29,7 @@ class BvResource(Resource):
 #            raise ApiException(e)
 
 class BaseLib:
-    _api_base_url = '/api'
+    _api_base_url = ''
     _resource_class = BvResource
     
     def __init__(self, server_url=None, consumer_key=None, consumer_secret=None, token_key=None, token_secret=None, filters=None):
