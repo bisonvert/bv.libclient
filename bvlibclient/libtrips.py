@@ -2,7 +2,8 @@
 from bvlibclient.baselib import BaseLib
 from bvlibclient.utils import ApiObject, json_unpack, date_to_api, api_to_date, \
          api_to_time, dict_to_object, dict_to_object_list, unicode_to_dict, \
-         is_iterable, dict_to_object_list_func, dict_to_object_func
+         is_iterable, dict_to_object_list_func, dict_to_object_func, \
+         api_to_datetime
 from bvlibclient.exceptions import ResourceAccessForbidden, ResourceDoesNotExist, \
     EditTripFormError
 from bvlibclient.libusers import User
@@ -36,6 +37,8 @@ class Trip(ApiObject):
     }
     clean_date = staticmethod(api_to_date)
     clean_time = staticmethod(api_to_time)
+    clean_creation_date = staticmethod(api_to_datetime)
+    clean_modification_date = staticmethod(api_to_datetime)
     
     @property
     def trip_type(self):
@@ -194,7 +197,7 @@ class LibTrips(BaseLib):
         
         if 'trip_id' in kwargs and kwargs['trip_id']: 
             kwargs['path'] = '%s/' % kwargs['trip_id']
-       
+
         return self.get_resource('search').get(**kwargs)
     
     @json_unpack()
