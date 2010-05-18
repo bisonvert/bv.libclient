@@ -16,6 +16,7 @@ import json
 TRIP_OFFER = 0
 TRIP_DEMAND = 1
 TRIP_BOTH = 2
+DOWS = (0,'Mon'),(1,'Tue'), (2,'Wed'), (3,'Thu'), (4,'Fri'), (5,'Sat'), (6,'Sun')
 
 # Model Objects
 class Offer(ApiObject):
@@ -57,6 +58,15 @@ class Trip(ApiObject):
             return 'Demand'
         elif self.trip_type == 2:
             return 'Both'
+
+    @property
+    def print_dows(self):
+        if hasattr(self, 'dows'):
+            return u'-'.join([value for (key, value) in DOWS
+                if key in self.dows])
+            return "dows"
+        else:
+            return None
 
     def __unicode__(self):
         return u"%s - %s" % (self.departure_city, self.arrival_city)
