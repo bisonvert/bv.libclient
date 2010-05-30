@@ -9,18 +9,18 @@ class BvResource(Resource):
     """A Bison Vert Resource
 
     """
-    def request(self, method, path=None, payload=None, headers=None, **params):
+    def request(self, *args, **kwargs):
         """Redefine the request method to raise our proper exception when
         needed, and not expose the underlying lib.
 
         """
         try:
-            return super(BvResource, self).request(method, path=path, 
-                payload=payload, headers=headers, **params)
+            return super(BvResource, self).request(*args, **kwargs)
         except Exception as e:
             # for debugging purposes. FIXME
             from ipdb import set_trace
             set_trace()
+            raise e
 #        except ResourceNotFound as e:
 #            raise ResourceDoesNotExist(e.response)
 #        except Unauthorized as e:

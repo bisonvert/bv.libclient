@@ -76,28 +76,32 @@ def inject_lib(lib):
 
 class AuthenticationMiddleware(object):
     def process_request(self, request):
-        """If some information is available in session about oauth token, 
+        """If some information are available in session about oauth token, 
         try to use it to authenticate to the BisonVert API, and provides a user
-        in the request.
+        in the request, as the `bvuser` parameter.
 
         """
         if is_oauth_authenticated(request, oauth_identifier):
-            lib = get_lib(LibUsers, request)
-            request.__class__.bvuser = lib.get_active_user()
+            try:
+                lib = get_lib(LibUsers, request)
+                request.__class__.bvuser = lib.get_active_user()
+            except Exception:
+                request.__class__.bvuser = None
+        else:
+            request.__class__.bvuser = None
         return None
 
 def bvauth(request):
-    """
-    Returns context variables required by apps that want to use the
-    authentication via the Bison Vert API.
+    """Add `bvuser` to the context, if the user is logged in (determined by 
+    the AuthenticationMiddleware from bvlibclient.ext.dj.
     
-    If there is no 'user' attribute in the request, uses None
+    If there is no `bvuser` attribute in the request, add `None` instead.
     """
     def get_user():
         if hasattr(request, 'bvuser'):
             return request.bvuser
         else:
-            return False
+            return None
     
     return {
         'bvuser': get_user(),
