@@ -1,11 +1,11 @@
-from bvlibclient.baselib import BaseLib
-from bvlibclient.utils import json_unpack, ApiObject, dict_to_object, \
+from bv.libclient.baselib import BaseLib
+from bv.libclient.utils import json_unpack, ApiObject, dict_to_object, \
         dict_to_object_list, api_to_datetime
 
-from bvlibclient.libtrips import Trip
-from bvlibclient.libusers import User
-from bvlibclient.constants import DEFAULT_PAGINATION
-from bvlibclient.exceptions import *
+from bv.libclient.libtrips import Trip
+from bv.libclient.libusers import User
+from bv.libclient.constants import DEFAULT_PAGINATION
+from bv.libclient.exceptions import *
 
 class Talk(ApiObject):
     _class_keys = {

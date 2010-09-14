@@ -1,12 +1,12 @@
-"""Tests for the Bison vert bvlibclient
+"""Tests for the Bison vert bv.libclient
 
 """
 import unittest
 import json
 from mock import Mock
 
-from bvlibclient.baselib import BvResource, BaseLib
-from bvlibclient import LibTrips, LibRatings, LibTalks, \
+from bv.libclient.baselib import BvResource, BaseLib
+from bv.libclient import LibTrips, LibRatings, LibTalks, \
     Trip, Rating, Talk, \
     ResourceDoesNotExist, ApiException, ResourceAccessForbidden, \
     EditTripFormError 

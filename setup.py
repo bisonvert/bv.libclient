@@ -9,11 +9,13 @@ if not hasattr(sys, 'version_info') or sys.version_info < (2, 5, 0, 'final'):
     raise SystemExit("Bisonvert lib client requires Python 2.5 or later.")
 
 from setuptools import setup, find_packages
-from bvlibclient import __version__
  
+
+name = 'bv.libclient'
 setup(
-    name = 'bisonvert-libclient',
-    version = __version__,
+    name = name,
+    namespace_packages = ['bv', name], 
+    version = '0.1.0',
     description = 'A python lib client to consume the bisonvert REST API.',
     long_description = file(
         os.path.join(
@@ -21,7 +23,7 @@ setup(
             'README.rst'
         )
     ).read(),
-    author = 'Alexis Metaireau',
+    author = 'Alexis Metaireau, Makina Corpus',
     author_email = 'ametaireau@gmail.com',
     license = 'BSD',
     url = 'http://bitbucket.org/bisonvert/bvlibclient',
@@ -36,7 +38,8 @@ setup(
         'Operating System :: OS Independent',
         'Programming Language :: Python',
     ],
-    packages = find_packages(),
+    packages = find_packages('src'),
+    package_dir = {'': 'src'}, 
 
     # Make setuptools include all data files under version control,
     # svn and CVS by default

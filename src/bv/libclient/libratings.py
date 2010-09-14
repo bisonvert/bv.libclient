@@ -1,9 +1,9 @@
-from bvlibclient.baselib import BaseLib
-from bvlibclient.utils import json_unpack, ApiObject, dict_to_object, \
+from bv.libclient.baselib import BaseLib
+from bv.libclient.utils import json_unpack, ApiObject, dict_to_object, \
         dict_to_object_list, api_to_date, string_to_boolean
 
-from bvlibclient.libtrips import Trip
-from bvlibclient.libusers import User
+from bv.libclient.libtrips import Trip
+from bv.libclient.libusers import User
 
 class Rating(ApiObject):
     _class_keys = {

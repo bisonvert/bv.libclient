@@ -1,4 +1,4 @@
-"""Facilities to use the bvlibclient with django
+"""Facilities to use the bv.libclient with django
 
 Steps to follow to set up a django application:
 
@@ -16,7 +16,7 @@ import inspect
 from oauthclient.utils import get_consumer_token, is_oauth_authenticated, \
     need_oauth_authentication
 
-from bvlibclient import LibUsers
+from bv.libclient import LibUsers
 
 oauth_identifier = getattr(settings, 'BVCLIENT_OAUTH_APPID', 'bisonvert')
 
@@ -93,7 +93,7 @@ class AuthenticationMiddleware(object):
 
 def bvauth(request):
     """Add `bvuser` to the context, if the user is logged in (determined by 
-    the AuthenticationMiddleware from bvlibclient.ext.dj.
+    the AuthenticationMiddleware from bv.libclient.ext.dj.
     
     If there is no `bvuser` attribute in the request, add `None` instead.
     """

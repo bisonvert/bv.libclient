@@ -1,5 +1,5 @@
-from bvlibclient.baselib import BaseLib
-from bvlibclient.utils import json_unpack, ApiObject, dict_to_object
+from bv.libclient.baselib import BaseLib
+from bv.libclient.utils import json_unpack, ApiObject, dict_to_object
 
 class User(ApiObject):
     def is_authenticated(self):
