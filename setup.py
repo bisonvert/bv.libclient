@@ -29,6 +29,8 @@ setup(
     url = 'http://bitbucket.org/bisonvert/bvlibclient',
     install_requires = [
             "restkit",
+            "django-oauthclient",
+            "httplib2",
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
