@@ -53,7 +53,7 @@ class LibTalks(BaseLib):
         """Count the number of talks
         
         """
-        return int(self.get_resource('talks').get(path='count/').body)
+        return int(self.get_resource('talks').get(path='count/').body_string())
     
     def validate_talk(self, id):
         """The validation, for a talk is the fact to say "OK, all of this seems
@@ -99,7 +99,7 @@ class LibTalks(BaseLib):
         return int(self.get_resource('talks').post(**{
             'trip_id':trip_id, 
             'message':message
-        }).body)
+        }).body_string())
 
     @dict_to_object_list(Message)
     @json_unpack()
@@ -115,7 +115,7 @@ class LibTalks(BaseLib):
         
         """
         return int(self.get_resource('talks').get(path='%i/messages/count/' %
-                                                  int(talk_id)).body)
+                                                  int(talk_id)).body_string())
 
     def add_message_to_talk(self, talk_id, message):
         """Add a message to an existing talk

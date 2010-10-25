@@ -1,4 +1,5 @@
-from restkit import Resource, oauth2, OAuthFilter
+from restkit import Resource, OAuthFilter
+from restkit.util import oauth2
 from restkit.errors import ResourceNotFound, Unauthorized, RequestError, RequestFailed
 from bv.libclient.exceptions import ResourceAccessForbidden, \
         ResourceDoesNotExist, ApiException
@@ -15,11 +16,16 @@ class BvResource(Resource):
 
         """
         try:
+            # baselib : lors d'un appel a request
+            # lib -> get_resource
+            # ex: libUser.get_active_user()
             return super(BvResource, self).request(*args, **kwargs)
         except Exception as e:
+            
+            print "Erreur au niveau de BvResource.request()"
+            print e
             # for debugging purposes. FIXME
-            from ipdb import set_trace
-            set_trace()
+            import pdb; pdb.set_trace()
             raise e
 #        except ResourceNotFound as e:
 #            raise ResourceDoesNotExist(e.response)
@@ -47,7 +53,7 @@ class BaseLib:
             else:
                 consumer = oauth2.Consumer(key=consumer_key, secret=consumer_secret)
                 token= oauth2.Token(token_key, token_secret)
-                self._filters = [OAuthFilter(('*', consumer, token))]
+                self._filters = [OAuthFilter('*', consumer, token)]
                 self._oauth = True
     
     def get_filters(self):

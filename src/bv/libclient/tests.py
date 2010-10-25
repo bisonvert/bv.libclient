@@ -1,6 +1,8 @@
 """Tests for the Bison vert bv.libclient
 
 """
+
+### XXX TEST TO CHANGE : HttpResponse body !
 import unittest
 import json
 from mock import Mock

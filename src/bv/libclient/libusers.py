@@ -15,9 +15,11 @@ class LibUsers(BaseLib):
     @json_unpack()
     def get_active_user(self):
         """Return information about the logged user."""
-        return self.get_resource('active_user').get()
+        resp =  self.get_resource('active_user').get()
+        return resp
     
     @dict_to_object(User)
     @json_unpack()
     def get_user(self, user_id):
-        return self.get_resource('user').get(path='%s/' % user_id)
+        resp = self.get_resource('user').get(path='%s/' % user_id)
+        return resp

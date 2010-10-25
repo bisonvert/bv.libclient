@@ -110,7 +110,7 @@ class LibTrips(BaseLib):
         """return the number of trips registered on the server.
         
         """
-        return int(self.get_resource('trip').get(path='count/').body)
+        return int(self.get_resource('trip').get(path='count/').body_string())
        
     @dict_to_object(Trip) 
     @json_unpack()
@@ -133,7 +133,7 @@ class LibTrips(BaseLib):
         """Return the number of trips for the registred user (for pagination pupose)
 
         """
-        return int(self.get_resource('trip').get(path='count_mine/').body)
+        return int(self.get_resource('trip').get(path='count_mine/').body_string())
 
     @dict_to_object_list(Trip)
     @json_unpack()
@@ -151,9 +151,9 @@ class LibTrips(BaseLib):
         kwargs = self._transform_dows(kwargs)
         response = self.get_resource('trip').put(path='%s/' % trip_id, **kwargs)
         if response.status_int == 200:
-            return dict_to_object_func(json.loads(response.body), Trip)
+            return dict_to_object_func(json.loads(response.body_string()), Trip)
         else:
-            raise EditTripFormError(json.loads(response.body))
+            raise EditTripFormError(json.loads(response.body_string()))
     
     def set_alert(self, trip_id, value):
         """Change the value of the alert for a specific trip.
@@ -168,6 +168,10 @@ class LibTrips(BaseLib):
         resp = self.get_resource('trip').delete(path='%s/' % trip_id)
 
     def search_trip(self, **kwargs):
+        """May be triggered by an AJAX call.
+        kwargs contains json info to unpack
+        But : it may not contain the "route" information which will trigger a bug
+        """
         temp_results = self._search_trip(**kwargs)
         object = Trip
 
@@ -208,6 +212,7 @@ class LibTrips(BaseLib):
         if 'trip_id' in kwargs and kwargs['trip_id']: 
             kwargs['path'] = '%s/' % kwargs['trip_id']
 
+        # will trigger the server to search the trip
         return self.get_resource('search').get(**kwargs)
     
     @json_unpack()
@@ -227,4 +232,4 @@ class LibTrips(BaseLib):
         return self.get_resource('calculate_buffer').get(**params)
    
     def ogcserver(self, params):
-        return self.get_resource('ogcserver', filters=[]).get(**params).body
+        return self.get_resource('ogcserver', filters=[]).get(**params).body_string()

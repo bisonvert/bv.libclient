@@ -9,19 +9,21 @@ import datetime
 def unicode_to_dict(request):
     return dict([(key.__str__(),value) for key,value in request.items()])
 
-def json_unpack(unpack_field='body'):
+def json_unpack(unpack_field='body_string'):
     """Unpack the result of a method (in json) to a python dict
 
     json_unpack can unpack a specific attribute of the response, 
     if exists and set in the unpack_field. 
 
-    Default unpack field is "body"
+    Default unpack field is "body_string"
     """
     def wrapper(func):
         def wrapped(*args, **kwargs):
             resp = func(*args, **kwargs)
             if unpack_field and hasattr(resp, unpack_field):
                 resp = getattr(resp, unpack_field)
+                if callable(resp):
+                    resp = resp()
             return json.loads(resp)
         return wrapped
     return wrapper

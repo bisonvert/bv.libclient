@@ -12,11 +12,10 @@ Steps to follow to set up a django application:
 """
 from django.conf import settings
 import inspect
-
 from oauthclient.utils import get_consumer_token, is_oauth_authenticated, \
     need_oauth_authentication
 
-from bv.libclient import LibUsers
+from bv.libclient.libusers import LibUsers
 
 oauth_identifier = getattr(settings, 'BVCLIENT_OAUTH_APPID', 'bisonvert')
 
