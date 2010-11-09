@@ -58,7 +58,8 @@ def dict_to_object_list(object):
 #Model classes
 class ApiObject:
     """Base Api Object.
-    
+    You can define clean_* methods that will be called to format
+    properly the adequate attributes when supplied on __init__.
     """
     _class_keys = {}
     def __init__(self, **kwargs):
