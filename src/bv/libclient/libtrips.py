@@ -85,7 +85,6 @@ class LibTrips(BaseLib):
         'trip': '/trips/', 
         'city': '/cities/',
         'search': '/trips/search/',
-        'update': '/trips/reduced_update/',
         'cartypes': '/cartypes/',
         'calculate_buffer': '/gis/calculate_buffer/',
         'ogcserver': '/gis/ogcserver/',
@@ -144,18 +143,6 @@ class LibTrips(BaseLib):
         """
         return self.get_resource('trip').get(path='mine/', **self._get_pagination_params(page, count))
     
-
-    def reduced_edit_trip(self, trip_id, **kwargs):
-        """Send new informations about the trip to the API, and return the right
-        response/error.
-        
-        """
-        kwargs = self._transform_dows(kwargs)
-        response = self.get_resource('update').put(path='%s/' % trip_id, **kwargs)
-        if response.status_int == 200:
-            return dict_to_object_func(json.loads(response.body_string()), Trip)
-        else:
-            raise EditTripFormError(json.loads(response.body_string()))
 
     def edit_trip(self, trip_id, **kwargs):
         """Send new informations about the trip to the API, and return the right
