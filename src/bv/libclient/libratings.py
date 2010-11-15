@@ -58,11 +58,12 @@ class LibRatings(BaseLib):
     def rate_user(self, rating_id, mark, comment):
         mark = abs(int(mark))
         if 0 <= mark <= 5:
-            self.get_resource('ratings').post(**{
-                'temprating_id':abs(int(rating_id)),
-                'comment':comment, 
-                'mark':mark
-            })
+            self.get_resource('ratings').post(
+                payload={
+                    'temprating_id':abs(int(rating_id)),
+                    'comment':comment,
+                    'mark':mark
+                })
         else:
             raise ValueError('mark must be between 0 and 5, both included;' \
                 '%s given.' % mark)

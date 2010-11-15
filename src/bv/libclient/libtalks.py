@@ -96,10 +96,9 @@ class LibTalks(BaseLib):
         """Initalize the conversation with an existing user.
 
         """
-        return int(self.get_resource('talks').post(**{
-            'trip_id':trip_id, 
-            'message':message
-        }).body_string())
+        return int(self.get_resource('talks').post(
+            payload = { 'trip_id':trip_id, 'message':message }
+            ).body_string())
 
     @dict_to_object_list(Message)
     @json_unpack()
@@ -121,7 +120,7 @@ class LibTalks(BaseLib):
         """Add a message to an existing talk
 
         """
-        self.get_resource('talks').post(path='%s/messages/' % talk_id, **{
-            'message':message,
-        })
+        self.get_resource('talks').post(path='%s/messages/' % talk_id, 
+                payload = {'message':message,}
+        )
 
