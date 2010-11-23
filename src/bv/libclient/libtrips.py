@@ -204,7 +204,6 @@ class LibTrips(BaseLib):
             trip_type = int(kwargs['trip_type'])
         
         if trip_type != None:
-            # if its a demand, we are seeking for offers.
             if trip_type == TRIP_DEMAND:
                 kwargs['is_demand'] = True
             if trip_type == TRIP_OFFER:

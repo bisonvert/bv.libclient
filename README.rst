@@ -19,9 +19,10 @@ To procede, add BVCLIENT_OAUTH_APPID=<your_app_name> in you settings.py that wil
 (see bv.libclient.ext.dj for more).
 
 
-.. bv.libclient relies on `restkit <https://github.com/benoitc/restkit/>`_ to communicate with the REST api
+bv.libclient relies on the great `restkit <https://github.com/benoitc/restkit/>`_ to communicate with the REST API.
+
 .. check the api documentation at.
 
-.. _bv.client: https://github.com/djcoin/bv.client
-.. _BisonVert server: https://github.com/djcoin/bv.server
-.. _django-oauthclient: https://github.com/djcoin/django-oauthclient
+.. _bv.client: https://github.com/bisonvert/bv.client
+.. _BisonVert server: https://github.com/bisonvert/bv.server
+.. _django-oauthclient: https://github.com/bisonvert/django-oauthclient
