@@ -61,7 +61,7 @@ class LibTalks(BaseLib):
         created.
         
         """
-        self.get_resource('talks').put(path='%s/' % id, validate='true')
+        self.get_resource('talks').put(path='%s/' % id, payload={'validate': 'true'})
 
     @dict_to_object_list(Talk)
     @json_unpack()
@@ -89,15 +89,15 @@ class LibTalks(BaseLib):
         """Delete a talk, with the explicative message.
 
         """
-        self.get_resource('talks').put(path='%s/' % id, cancel='true',
-                message=message)
+        self.get_resource('talks').put(path='%s/' % id, 
+                                   payload={'cancel': 'true', 'message': message})
 
     def create_talk(self, trip_id, message):
         """Initalize the conversation with an existing user.
 
         """
         return int(self.get_resource('talks').post(
-            payload = { 'trip_id':trip_id, 'message':message }
+            payload = { 'trip_id': trip_id, 'message': message }
             ).body_string())
 
     @dict_to_object_list(Message)

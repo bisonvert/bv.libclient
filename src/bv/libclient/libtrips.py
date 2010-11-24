@@ -127,7 +127,7 @@ class LibTrips(BaseLib):
         
         """
         kwargs = self._transform_dows(kwargs)
-        return self.get_resource('trip').post(**dict([(key, value) for key,value in kwargs.items() if not value == u'' and not value == [u'']]))
+        return self.get_resource('trip').post(payload=dict([(key, value) for key,value in kwargs.items() if not value == u'' and not value == [u'']]))
    
     def count_user_trips(self):
         """Return the number of trips for the registred user (for pagination pupose)
@@ -150,7 +150,7 @@ class LibTrips(BaseLib):
         
         """
         kwargs = self._transform_dows(kwargs)
-        response = self.get_resource('trip').put(path='%s/' % trip_id, **kwargs)
+        response = self.get_resource('trip').put(path='%s/' % trip_id, payload=kwargs)
         if response.status_int == 200:
             return dict_to_object_func(json.loads(response.body_string()), Trip)
         else:
@@ -160,7 +160,7 @@ class LibTrips(BaseLib):
         """Change the value of the alert for a specific trip.
 
         """
-        return self.get_resource('trip').put(path="%s/" % trip_id, **{'alert':value})
+        return self.get_resource('trip').put(path="%s/" % trip_id, payload={'alert':value})
 
     def delete_trip(self, trip_id):
         """Delete a trip, or raise appropriate exceptions if needed.
