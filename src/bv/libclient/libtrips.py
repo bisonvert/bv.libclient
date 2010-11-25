@@ -8,7 +8,9 @@ from bv.libclient.exceptions import ResourceAccessForbidden, ResourceDoesNotExis
     EditTripFormError
 from bv.libclient.libusers import User
 from bv.libclient.constants import DEFAULT_PAGINATION
+
 from restkit.errors import RequestFailed
+from restkit.util import url_encode
 
 # Python imports
 import json
@@ -17,6 +19,12 @@ TRIP_OFFER = 0
 TRIP_DEMAND = 1
 TRIP_BOTH = 2
 DOWS = (0,'Mon'),(1,'Tue'), (2,'Wed'), (3,'Thu'), (4,'Fri'), (5,'Sat'), (6,'Sun')
+
+
+def format_dict2str(kwargs):
+    dct = dict([(key, value) for key,value in kwargs.items() if not value == u'' and not value == [u'']])
+    return url_encode(dct)
+
 
 # Model Objects
 class Offer(ApiObject):
@@ -127,7 +135,7 @@ class LibTrips(BaseLib):
         
         """
         kwargs = self._transform_dows(kwargs)
-        return self.get_resource('trip').post(payload=dict([(key, value) for key,value in kwargs.items() if not value == u'' and not value == [u'']]))
+        return self.get_resource('trip').post(payload=format_dict2str(kwargs))
    
     def count_user_trips(self):
         """Return the number of trips for the registred user (for pagination pupose)
@@ -150,7 +158,7 @@ class LibTrips(BaseLib):
         
         """
         kwargs = self._transform_dows(kwargs)
-        response = self.get_resource('trip').put(path='%s/' % trip_id, payload=kwargs)
+        response = self.get_resource('trip').put(path='%s/' % trip_id, payload=format_dict2str(kwargs))
         if response.status_int == 200:
             return dict_to_object_func(json.loads(response.body_string()), Trip)
         else:
@@ -160,7 +168,7 @@ class LibTrips(BaseLib):
         """Change the value of the alert for a specific trip.
 
         """
-        return self.get_resource('trip').put(path="%s/" % trip_id, payload={'alert':value})
+        return self.get_resource('trip').put(path="%s/" % trip_id, payload=format_dict2str({'alert':value}))
 
     def delete_trip(self, trip_id):
         """Delete a trip, or raise appropriate exceptions if needed.

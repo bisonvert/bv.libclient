@@ -25,7 +25,6 @@ class BvResource(Resource):
             print "Erreur au niveau de BvResource.request()"
             print e
             # for debugging purposes. FIXME
-            import pdb; pdb.set_trace()
             raise e
 #        except ResourceNotFound as e:
 #            raise ResourceDoesNotExist(e.response)
